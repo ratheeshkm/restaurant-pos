@@ -1,0 +1,6 @@
+{
+	"editor.acceptSuggestionOnEnter": "off",
+	"editor.renderFinalNewline": false,
+	"html.format.preserveNewLines": false,
+	"javascript.format.enable": false
+}
