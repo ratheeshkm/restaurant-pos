@@ -7,7 +7,8 @@ const orderIntialState = {
 	orderId: null,
 	paymentId: null,
 	orderLists: [],
-	orderCategory: null
+	orderCategory: null,
+	completedOrders: []
 }
 
 export default orderIntialState;

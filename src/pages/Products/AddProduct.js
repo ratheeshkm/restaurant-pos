@@ -9,6 +9,7 @@ import * as yup from 'yup';
 import { toast, Bounce } from 'react-toastify';
 import 'react-quill/dist/quill.snow.css';
 import { v4 as uuidv4 } from 'uuid';
+import { useHistory } from 'react-router-dom';
 
 const schema = yup.object().shape({
 	inventory: yup.string().trim().required('Required'),
@@ -24,7 +25,7 @@ const AddInventory = (props) => {
 		category: '',
 		subCategory: ''
 	});
-	
+	let history = useHistory();
 	if(!inventory) {
 		props.getInventory();
 	}
@@ -54,6 +55,7 @@ const AddInventory = (props) => {
 						position: 'top-right',
 						type: 'success'
 					})
+				history.push("/products")
 			}
 		});
 	}

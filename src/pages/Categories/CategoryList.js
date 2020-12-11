@@ -9,6 +9,7 @@ import { formatColumn } from '../../components/FormatColumn';
 
 const CategoryList = (props) => {
 	const { categories, getCategories, updateCategories, deleteCategories  } = props;
+	
 	useEffect(() => {
 		getCategories();
 	}, [getCategories]);
@@ -35,17 +36,20 @@ const CategoryList = (props) => {
 			text: 'ID',
 			hidden: true,
 			searchable: false
-		}, {
+		}, 
+		{
 			dataField: 'name',
 			text: 'Name',
 			sort: true,
 			formatter: nameColumnFormatter,
-		}, {
+		}, 
+		{
 			dataField: 'description',
 			text: 'Description',
 			sort: true,
 			formatter: desciptionColumnFormatter,
-		}, {
+		}, 
+		{
 			dataField: 'action',
 			isDummyColumn: true,
 			text: 'Action',

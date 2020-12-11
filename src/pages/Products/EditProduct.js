@@ -9,6 +9,7 @@ import * as yup from 'yup';
 import { toast, Bounce } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { useHistory } from 'react-router-dom';
 
 const schema = yup.object().shape({
 	//name: yup.string().trim().required('Required'),
@@ -24,7 +25,7 @@ const EditProduct = (props) => {
 		categoryid: '',
 		subcategoryid: ''
 	});
-
+	let history = useHistory();
 	let { id } = useParams();
 	if(id) {
 		product = products && products.filter(item => item.id ===  parseInt(id, 10));
@@ -67,7 +68,6 @@ const EditProduct = (props) => {
 	}
 
 	const onSubmit = async(data, e) => {
-		console.log(data)
 		data['id'] = id;
 		await props.updateProduct(data)
 			.then((result) => {
@@ -80,6 +80,7 @@ const EditProduct = (props) => {
 						position: 'top-right',
 						type: 'success'
 					})
+				history.push("/products")
 			}
 		});
 	}

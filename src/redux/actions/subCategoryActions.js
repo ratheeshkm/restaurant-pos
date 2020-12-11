@@ -1,6 +1,7 @@
 import Q from 'q';
 import axios from 'axios';
 import { SET_SUB_CATEGORY } from './types/subCategoryActionTypes';
+import { setLoading } from './appActions';
 
 export const setSubCategories = (subCategories) => {
 	return {
@@ -12,17 +13,17 @@ export const setSubCategories = (subCategories) => {
 export const getSubCategories = () => {
 	return (dispatch, getState) => {
 		let defer = Q.defer();
-		//dispatch(setLoading(true));
+		dispatch(setLoading(true));
 		axios.get("http://localhost:5000/pos/v1/getSubCategories")
 			.then((result) => {
 				defer.resolve(result.data.results);
 				dispatch(setSubCategories(result.data.results));
-				//dispatch(setLoading(false));
+				dispatch(setLoading(false));
 			})
 			.catch((error) => {
 				console.log("Error", error);
 				defer.resolve(error);
-				//dispatch(setLoading(false));
+				dispatch(setLoading(false));
 			})
 		return defer.promise;
 	}

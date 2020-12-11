@@ -6,10 +6,12 @@ import { getCategories } from '../../redux/actions/categoryActions';
 import { getInventory, setOrderItem, setPaymentType, setPayment, saveOrderItem, 
 setOrderReset, setDelivery, initiatePayment } from '../../redux/actions/orderActions';
 import { setTableReset } from '../../redux/actions/tableActions';
+import { getProducts } from "../../redux/actions/productActions";
 
 const mapStateToProps = (state, ownProps) => {
 	const { loading } = state.app;
 	const { categories } = state.categories;
+	const { products } = state.products;
 	const { inventory, paymentType, paymentId, currentTable, items, orderId, orderCategory } = state.order;
 	return {
 		loading,
@@ -21,7 +23,8 @@ const mapStateToProps = (state, ownProps) => {
 		currentTable,
 		items,
 		orderId,
-		orderCategory
+		orderCategory,
+		products
 	};
 }
 
@@ -36,7 +39,8 @@ const actionCreaters = {
 	setOrderReset,
 	setTableReset,
 	setDelivery,
-	initiatePayment
+	initiatePayment,
+	getProducts
 }
 
 export default withRouter(connect(mapStateToProps, actionCreaters)(CurrentTab));

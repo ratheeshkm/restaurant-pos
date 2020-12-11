@@ -3,7 +3,7 @@ import axios from 'axios';
 import { 
 	SET_ACTIVE_TAB, SET_INVENTORY, SET_CURRENT_TABLE, SET_ORDER_ITEM, SET_PAYMENT_TYPE, 
 	SET_PAYMENT_ID, SET_ORDER_ID, SET_ORDER_LISTS, CLEAR_ORDER_ITEM, SET_ORDER_CATEGORY, 
-	SET_ORDER_RESET, UPDATE_ORDER_ITEM, SET_ORDER_ITEMS
+	SET_ORDER_RESET, UPDATE_ORDER_ITEM, SET_ORDER_ITEMS, SET_COMPLETED_ORDERS
 } from './types/orderActionTypes';
 import { setLoading } from '../actions/appActions';
 import { getTables } from '../actions/tableActions';
@@ -49,6 +49,13 @@ export const setOrderItems = (items) => {
 	}
 }
 
+export const setCompletedOrders = (orders) => {
+	return {
+		type: SET_COMPLETED_ORDERS,
+		orders
+	}
+}
+
 export const updateOrderItem = (item) => {
 	return {
 		type: UPDATE_ORDER_ITEM,
@@ -66,7 +73,6 @@ export const saveOrderItem = (data) => {
 			.then((result) => {
 				defer.resolve(result);
 				data[0].id = result.data.rows[0].id;
-				//dispatch(setOrderItem(data));
 				dispatch(getOrderLists());
 				dispatch(getOrderItems(getState().order.orderId));
 			})
@@ -295,6 +301,24 @@ export const initiatePayment = (orderid) => {
 				const { paymentId } = result.data;
 				defer.resolve(paymentId);
 				dispatch(setPaymentId(paymentId));
+			})
+			.catch((error) => {
+				console.log("Error", error);
+				defer.resolve(error);
+				dispatch(setLoading(false));
+			})
+		return defer.promise;
+	}
+}
+
+export const getCompletedOrders = () => {
+	return (dispatch, getState) => {
+		let defer = Q.defer();
+		dispatch(setLoading(true));
+		axios.get("http://localhost:5000/pos/v1/get-completed-orders")
+			.then((result) => {
+				defer.resolve(result);
+				dispatch(setCompletedOrders(result.data.results));
 			})
 			.catch((error) => {
 				console.log("Error", error);

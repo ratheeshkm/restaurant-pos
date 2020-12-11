@@ -30,7 +30,7 @@ const ProductList = (props) => {
 		getInventory();
 	}, [getProducts, getSubCategories , getCategories, getInventory]);
 	
-	if (!inventory.length || !categories.length || !subCategories) return null;
+	if (!inventory.length || !categories.length || !subCategories.length) return null;
 
 	let inventoryList = inventory.map(item => {
 		return {
@@ -38,7 +38,7 @@ const ProductList = (props) => {
 			label: item.name
 		}
 	})
-
+	
 	let categoriesList = categories.map(item => {
 		return {
 			value: item.id,
@@ -98,14 +98,15 @@ const ProductList = (props) => {
 			hidden: false,
 			searchable: true,
 			formatter: (cell, row, rowIndex, formatExtraData) => {
-				return formatColumn(cell, row, rowIndex, formatExtraData, 'inventoryid', inventory);
+				return formatColumn(cell, row, rowIndex, formatExtraData, 'inventoryid', inventory, 'name');
 			},
 			editor: {
 				type: Type.SELECT,
 				getOptions: (setOptions, { row, column }) => {
 					return [...inventoryList];
 				}
-			}
+			},
+			editable: false
 		},
 		{
 			dataField: 'categoryid',
@@ -128,7 +129,7 @@ const ProductList = (props) => {
 			hidden: false,
 			searchable: true,
 			formatter: (cell, row, rowIndex, formatExtraData) => {
-				return formatColumn(cell, row, rowIndex, formatExtraData, 'subcategoryid', subCategories, 'subCategoryName');
+				return formatColumn(cell, row, rowIndex, formatExtraData, 'subcategoryid', subCategories, "subCategoryName");
 			},
 			editor: {
 				type: Type.SELECT,

@@ -8,7 +8,7 @@ import cx from 'classnames';
 import { formatColumn } from '../../components/FormatColumn';
 
 const TableLists = (props) => {
-	const { restaurantDetails, tables, getRestaurantDetails, getTables } = props;
+	const { restaurantDetails, tables, getRestaurantDetails, getTables, updateTables, deleteTables } = props;
 	useEffect(() => {
 		getRestaurantDetails();
 		getTables();
@@ -113,7 +113,7 @@ const TableLists = (props) => {
 					</div>
 				</Col>
 			</Row>
-			<TableList columns={columns} data={tables}  />
+			<TableList columns={columns} data={tables} update={updateTables} delete={deleteTables} />
 		</Fragment>
 	)
 }

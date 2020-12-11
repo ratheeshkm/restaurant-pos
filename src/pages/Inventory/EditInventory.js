@@ -11,6 +11,7 @@ import ImageCrop from '../../components/ImageCrop';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const schema = yup.object().shape({
 	name: yup.string().trim().required('Required'),
@@ -24,6 +25,7 @@ const EditInventory = (props) => {
 	const { inventory=[] } = props;
 	const [ description, setDescription ] = useState("");
 	let { id } = useParams();
+	let history = useHistory();
 	if(id) {
 		inventoryList = inventory && inventory.filter(item => item.id ===  id);
 	}
@@ -65,6 +67,7 @@ const EditInventory = (props) => {
 						position: 'top-right',
 						type: 'success'
 					})
+				history.push("/inventory")
 			}
 		});
 	}

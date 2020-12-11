@@ -23,8 +23,6 @@ const SubCategoryList = (props) => {
 		getCategories();
 	}, [getSubCategories, getCategories]);
 
-	if (!categories || !subCategories) return null;
-	
 	let categoriesList = categories.map(item => {
 		return {
 			value: item.id,
@@ -54,6 +52,18 @@ const SubCategoryList = (props) => {
 			searchable: false
 		},
 		{
+			dataField: 'subCategoryName',
+			text: 'Name',
+			sort: true,
+			formatter: nameColumnFormatter,
+		},
+		{
+			dataField: 'subCategoryDescription',
+			text: 'Description',
+			sort: true,
+			formatter: desciptionColumnFormatter,
+		},
+		{
 			dataField: 'categoryId',
 			text: 'Category',
 			hidden: false,
@@ -67,18 +77,6 @@ const SubCategoryList = (props) => {
 					return [...categoriesList];
 				}
 			}
-		},
-		{
-			dataField: 'subCategoryName',
-			text: 'Sub Category Name',
-			sort: true,
-			formatter: nameColumnFormatter,
-		},
-		{
-			dataField: 'subCategoryDescription',
-			text: 'Sub Category Description',
-			sort: true,
-			formatter: desciptionColumnFormatter,
 		},
 		{
 			dataField: 'action',
@@ -100,8 +98,8 @@ const SubCategoryList = (props) => {
 			<Row>
 				<Col lg="8">
 					<PageTitle
-						heading="Category List"
-						subheading="List of all the categories."
+						heading="Sub Category List"
+						subheading="List of all the sub categories."
 						icon="pe-7s-drawer icon-gradient bg-happy-itmeo"
 					/>
 				</Col>

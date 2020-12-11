@@ -1,15 +1,14 @@
 import React, { Fragment } from 'react';
 import { useForm } from 'react-hook-form';
-import { Container, Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import { Row, Col, FormGroup, Label, Input, Button } from 'reactstrap';
 import AppHeader from '../../Layout/AppHeader';
 import AppSidebar from '../../Layout/AppSidebar';
 import AppFooter from '../../Layout/AppFooter';
 import { yupResolver } from '@hookform/resolvers';
 import * as yup from 'yup';
-import {
-	toast,
-	Bounce
-} from 'react-toastify';
+import { toast, Bounce } from 'react-toastify';
+import { v4 as uuidv4 } from 'uuid';
+import { useHistory } from 'react-router-dom';
 
 const schema = yup.object().shape({
 	category: yup.string().trim().required('Required'),
@@ -22,11 +21,12 @@ const AddSubCategory = (props) => {
 	if (!categories) {
 		props.getCategories();
 	}
-	console.log("categories", categories);
-	const { register, handleSubmit, errors, reset } = useForm({
+	let history = useHistory();
+	const { register, handleSubmit, errors } = useForm({
 		mode: 'onBlur | onChange',
 		resolver: yupResolver(schema),
 	});
+	
 	const onSubmit = async (data, e) => {
 		await props.addSubCategory(data)
 			.then((result) => {
@@ -40,6 +40,7 @@ const AddSubCategory = (props) => {
 						type: 'success'
 					})
 				}
+				history.push("/sub-categories")
 			});
 	}
 	if (!categories) return null;
@@ -65,7 +66,7 @@ const AddSubCategory = (props) => {
 											<option value="">Select Category</option>
 											{
 												categories && categories.map(item => (
-													<option value={item.id}>{item.name}</option>
+													<option key={uuidv4()} value={item.id}>{item.name}</option>
 												))
 											}
 										</Input>
@@ -108,7 +109,7 @@ const AddSubCategory = (props) => {
 							</Row>
 							<Row>
 								<Col lg="6">
-									<Button className="float-right">Submit</Button>
+									<Button color="primary" className="float-right">Submit</Button>
 								</Col></Row>
 						</form>
 					</div>

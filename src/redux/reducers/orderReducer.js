@@ -1,6 +1,7 @@
 import { SET_ACTIVE_TAB, SET_INVENTORY, SET_CURRENT_TABLE, SET_ORDER_ITEM, 
 	SET_PAYMENT_TYPE, SET_ORDER_ID, SET_PAYMENT_ID, SET_ORDER_LISTS, CLEAR_ORDER_ITEM, 
-	SET_ORDER_CATEGORY, SET_ORDER_RESET, UPDATE_ORDER_ITEM, SET_ORDER_ITEMS } from '../actions/types/orderActionTypes';
+	SET_ORDER_CATEGORY, SET_ORDER_RESET, UPDATE_ORDER_ITEM, SET_ORDER_ITEMS, SET_COMPLETED_ORDERS } 
+	from '../actions/types/orderActionTypes';
 import orderIntialStates from './initialStates/orderIntialStates';
 
 const orderReducer = (state = orderIntialStates, action) => {
@@ -66,6 +67,11 @@ const orderReducer = (state = orderIntialStates, action) => {
 			return {
 				...state,
 				orderCategory: action.orderCategory
+			}
+		case SET_COMPLETED_ORDERS:
+			return {
+				...state,
+				completedOrders: [ ...action.orders ]
 			}
 		case SET_ORDER_RESET: 
 			return orderIntialStates

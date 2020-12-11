@@ -1,15 +1,14 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import {
-	Row, Col, Nav, NavItem, NavLink, Card, Button, CardTitle
-} from 'reactstrap';
+import { Row, Col, Nav, NavItem, NavLink, Card, Button, CardTitle, CardImg, CardBody } from 'reactstrap';
 import OrderItemsContainer from './OrderItemsContainer';
+import { v4 as uuidv4 } from 'uuid';
 
 const CurrentTab  = (props) => {
 	const [ categoryId, setCategoryId ] = useState("all");
 	const [ payment, setPayment ] = useState(false);
 
 	const { categories, getCategories, getInventory, inventory, saveOrderItem, paymentType, 
-		paymentId, items, orderId, orderCategory, currentTable } = props;
+		paymentId, items, orderId, orderCategory, currentTable, getProducts, products } = props;
 	let paymentDetails = "";
 	
 	useEffect(() => {
@@ -21,28 +20,30 @@ const CurrentTab  = (props) => {
 	}, [getInventory, inventory.length]);
 
 	useEffect(() => {
+		!products.length && getProducts();
+ }, [getProducts, products.length]);
+
+	useEffect(() => {
 		setPayment(paymentId ? true : false)
 	}, [paymentId]);
 	
 	if(!categories.length || !inventory.length) {
 		return null;
 	}
+
+	const productList = products.map(item => {
+		let productInventory = inventory.filter(invItem => invItem.id === item.inventoryid);
+		return {...item, ...productInventory[0]};
+	});
+
+	console.log("productList-->", productList)
 	
 	const handleSetCategoryId = (event) => {
 		setCategoryId(event.currentTarget.dataset.categoryid);
 	}
 	
-	const inventoryList = inventory.filter(item =>  {
-		if(categoryId === 'all') {
-			return item;
-		} else if(categoryId === item.categoryid) {
-			return item;
-		}
-		return false;	
-	});
-
 	const handleAddItem = (event) => {
-		let item = inventory.filter(item => item.id.toString() === event.currentTarget.dataset.inventoryid);
+		let item = productList.filter(item => item.id.toString() === event.currentTarget.dataset.productid);
 		let isExistingItem = items.findIndex(itemList => itemList.inventoryid === item[0].inventoryid && itemList.orderid === orderId );
 		isExistingItem === -1 && saveOrderItem(item);
 	}
@@ -64,7 +65,8 @@ const CurrentTab  = (props) => {
 			paymentType: paymentType,
 			paymentStatus: "Completed",
 			currentTable: currentTable,
-			orderId: orderId
+			orderId: orderId,
+			paymentAmount: total
 		}
 		props.setPayment(paymentInfo)
 		.then(() => {
@@ -116,12 +118,13 @@ const CurrentTab  = (props) => {
 							<Col lg="6">
 								<Row>
 										{
-											inventoryList.map(item => {
-												return <Col md="3" key={`Inventory-${item.id}`} data-inventoryid={item.id} onClick={handleAddItem}>
-													<Card body className="card-shadow-primary border mb-3" style={{cursor:"pointer", textAlign:"center"}} outline color="primary">
-													<CardTitle>{item.name}</CardTitle>
-													{item.status}
-											</Card></Col>
+											productList.map(item => {
+												return <Col md="5" key={uuidv4()} data-productid={item.id} onClick={handleAddItem}>
+														<Card body className="card-shadow-primary border mb-3" style={{cursor:"pointer", textAlign:"center", padding:"5px"}} outline color="primary">
+															<CardImg top width="100%" src={'http://localhost:5000/' + item.image} alt="Card image cap" />
+															<CardTitle style={{height:"60px", margin:"10px 0px 0px 0px", padding:"5px"}}>{item.name}</CardTitle>
+														</Card>
+												</Col>
 											})
 										}
 								</Row>

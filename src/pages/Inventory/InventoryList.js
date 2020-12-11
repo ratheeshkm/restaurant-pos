@@ -6,47 +6,21 @@ import TableList from '../../components/TableList';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 import { formatColumn } from '../../components/FormatColumn';
-import { Type } from 'react-bootstrap-table2-editor';
 import ActionDropdown from '../../components/ActionDropDown';
+import renderHTML from 'react-render-html';
 
 const InventoryList = (props) => {
-	console.log(props)
 	const { 
 		inventory=[], 
 		getInventory, 
-		getSubCategories, 
-		getCategories, 
-		categories, 
-		subCategories,
 		deleteInventory,
 		updateInventory
 	} = props;
 
 	useEffect(() => {
 		getInventory();
-		getSubCategories();
-		getCategories();
-	}, [getInventory, getSubCategories , getCategories]);
+	}, [getInventory]);
 	
-	if (!inventory || !categories || !subCategories) return null;
-
-	let categoriesList = categories.map(item => {
-		return {
-			value: item.id,
-			label: item.name
-		}
-	})
-
-	let subCategoriesList = subCategories.map(item => {
-		return {
-			value: item.id,
-			label: item.subCategoryName
-		}
-	})
-
-	console.log(inventory);
-	console.log(subCategories);
-	console.log(subCategoriesList);
 	const ActionColumn = (cell, row, rowIndex, formatExtraData) => {
 		if (!row) {
 			return null;
@@ -87,16 +61,14 @@ const InventoryList = (props) => {
 	}
 
 	function imageColumnFormatter(cell, row, rowIndex, formatExtraData) {
-		let cellValue = formatColumn(cell, row, rowIndex, formatExtraData, 'image');
 		return (
-			<span><img src={'http://localhost:5000/'+cellValue} alt="pic" width="150px" /></span>
+			<span><img src={'http://localhost:5000/' + cell} alt="pic" width="150px" /></span>
 		);
 	}
 
 	function descriptionColumnFormatter(cell, row, rowIndex, formatExtraData) {
-		let cellValue = formatColumn(cell, row, rowIndex, formatExtraData, 'description');
-		return (
-			<span>{cellValue}</span>
+			return (
+			<span>{renderHTML(cell)}</span>
 		);
 	}
 
@@ -133,37 +105,42 @@ const InventoryList = (props) => {
 			text: 'Name',
 			sort: true,
 			formatter: nameColumnFormatter,
-			cellEdit: false
+			editable: false
 		},
 		{
 			dataField: 'image',
 			text: 'Image',
 			sort: true,
 			formatter: imageColumnFormatter,
+			editable: false
 		},
 		{
 			dataField: 'description',
 			text: 'Description',
 			sort: true,
 			formatter: descriptionColumnFormatter,
+			editable: false
 		},
 		{
 			dataField: 'quantity',
 			text: 'Quantitiy',
 			sort: true,
 			formatter: quantityColumnFormatter,
+			editable: false
 		},
 		{
 			dataField: 'price',
 			text: 'Price',
 			sort: true,
 			formatter: priceColumnFormatter,
+			editable: false
 		},
 		{
 			dataField: 'status',
 			text: 'Status',
 			sort: true,
 			formatter: statusColumnFormatter,
+			editable: false
 		},
 		{
 			dataField: 'action',
@@ -185,8 +162,8 @@ const InventoryList = (props) => {
 			<Row>
 				<Col lg="8">
 					<PageTitle
-						heading="Category List"
-						subheading="List of all the categories."
+						heading="Inventory List"
+						subheading="List of all the inventories."
 						icon="pe-7s-drawer icon-gradient bg-happy-itmeo"
 					/>
 				</Col>

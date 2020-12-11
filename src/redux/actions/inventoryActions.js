@@ -47,8 +47,7 @@ export const getInventory = () => {
 export const deleteInventory = (data) => {
 	return (dispatch, getState) => {
 		let defer = Q.defer();
-		alert("Test")
-		axios.post("http://localhost:5000/pos/v1/delete-products", data)
+		axios.post("http://localhost:5000/pos/v1/delete-inventory", data)
 			.then(result => {
 				defer.resolve(result.data);
 				dispatch(getInventory());

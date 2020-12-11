@@ -124,6 +124,12 @@ const TableList = (props) => {
 	function handleChange(oldValue, newValue, row, column) {
 		if (!newValue) return;
 		let updatedRows = [];
+		// let editedRows = [];
+		// let editedValues = {
+		// 	id: row.id,
+		// 	isUpdate: true
+		// }
+		//editedRows.push(editedValues);
 		if (oldValue !== 'undefined' && oldValue !== newValue) {
 			let isExisting = editedRows.findIndex(el => el.rowId === row.id);
 			if (isExisting !== -1) {
@@ -141,8 +147,14 @@ const TableList = (props) => {
 					action: "Update"
 				}];
 			}
+			// console.log("editedRows -->", updatedRows)
+			// console.log("oldValue-->", oldValue);
+			// console.log("newValue-->", newValue);
+			// if(oldValue === newValue) {
+			// 	console.log("Same value");
+			// }
 			setEditedRows([...updatedRows]);
-		}
+		} 
 	}
 
 	const ActionColumn = (cell, row, rowIndex, formatExtraData) => {
@@ -213,10 +225,9 @@ const TableList = (props) => {
 		return item;
 	}
 )
-
-	const contentTable = ({ paginationProps, paginationTableProps }) => (
+	
+	const contentTable = ({ paginationProps, paginationTableProps }) => (	
 		<div>
-			<PaginationListStandalone {...paginationProps} />
 			<ToolkitProvider
 				keyField="id"
 				columns={columns}
@@ -225,10 +236,10 @@ const TableList = (props) => {
 			>
 				{toolkitprops => (
 					<div>
-						<SearchBar {...toolkitprops.searchProps} />
+						<SearchBar  {...toolkitprops.searchProps} />
 						<div className="action-buttons">
-							{selectedRows.length > 0 && data.length > 0 && <Button className="mb-2 mr-2" color="danger" onClick={deleteSelectedRows}>Delete</Button>}
-							{editedRows.length > 0 && editedRows.filter(item => item.action !== '').length > 0 && data.length > 0 && <Button className="mb-2 mr-2" color="primary" onClick={updateSelectedRows}>Update</Button>}
+							{ selectedRows.length > 0 && data.length > 0 && <Button className="mb-2 mr-2" color="danger" onClick={deleteSelectedRows}>Delete</Button> }
+							{ editedRows.length > 0 && editedRows.filter(item => item.action !== '' ).length > 0 && data.length > 0 && <Button className="mb-2 mr-2" color="primary" onClick={updateSelectedRows}>Update</Button> }
 						</div>
 						<BootstrapTable
 							keyField='id'
@@ -243,7 +254,8 @@ const TableList = (props) => {
 							loading={false}
 							overlay={overlayFactory()}
 							pagination={paginationFactory(options)}
-							{...toolkitprops.baseProps}
+							//search={toolkitprops.baseProps.search}
+							//{...toolkitprops.baseProps}
 							{...paginationTableProps}
 						/>
 					</div>

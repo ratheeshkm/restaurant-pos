@@ -2,7 +2,7 @@ import {Route, Redirect, Switch } from 'react-router-dom';
 import React, {Suspense, lazy, Fragment} from 'react';
 import { ToastContainer } from 'react-toastify';
 
-const Dashborad = lazy(() => import('../../pages/Dashborad/Dashboard'));
+const Dashborad = lazy(() => import('../../pages/Dashborad/DashboardContainer'));
 
 const Categories = lazy(() => import('../../pages/Categories/Category'));
 const AddCategory = lazy(() => import('../../pages/Categories/AddCategoryContainer'));

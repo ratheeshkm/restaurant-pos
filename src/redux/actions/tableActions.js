@@ -77,7 +77,7 @@ export const updateTables = (data) => {
 		axios.post("http://localhost:5000/pos/v1/update-tables", data)
 			.then(result => {
 				defer.resolve(result.data);
-				//dispatch(getCategories());
+				dispatch(getTables());
 			})
 			.catch(error => {
 				console.log("Error", error);

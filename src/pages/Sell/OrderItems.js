@@ -71,7 +71,7 @@ const OrderItems  = (props) => {
 		<Fragment>
 			<Row>
 				<Col>
-					<Card className="main-card mb-3">
+					<Card className="main-card mb-4">
 							<CardHeader>
 								<div style={{margin: "0 auto", textAlign: "center"}}>
 									<div>{orderCategory} {(table.length && table[0].name) ? "- " + table[0].name : " " }</div>

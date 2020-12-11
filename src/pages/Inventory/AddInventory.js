@@ -10,6 +10,7 @@ import { toast, Bounce } from 'react-toastify';
 import ImageCrop from '../../components/ImageCrop';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { useHistory } from 'react-router-dom';
 
 const schema = yup.object().shape({
 	name: yup.string().trim().required('Required'),
@@ -20,12 +21,11 @@ const schema = yup.object().shape({
 
 const AddInventory = (props) => {
 	const [ description, setDescription ] = useState('');
-
 	const { register, handleSubmit, errors } = useForm({
 		mode: 'onBlur | onChange',
 		resolver: yupResolver(schema),
 	});
-	
+	let history = useHistory();
 	let image = "";
 	const onSubmit = async(data, e) => {
 		data['image'] = image;
@@ -42,6 +42,7 @@ const AddInventory = (props) => {
 						position: 'top-right',
 						type: 'success'
 					})
+				history.push("/inventory");
 			}
 		});
 	}
