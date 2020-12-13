@@ -34,6 +34,8 @@ const orderReducer = (state = orderIntialStates, action) => {
 			}
 		case UPDATE_ORDER_ITEM:
 			let updateItems = state.items;
+			console.log("action.item-->", action.item)
+			console.log("To update", updateItems.map(item => (item.id === action.item.id) ? action.item : item))
 			return {
 				...state,
 				items: updateItems.map(item => (item.id === action.item.id) ? action.item : item)

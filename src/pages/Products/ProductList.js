@@ -30,7 +30,7 @@ const ProductList = (props) => {
 		getInventory();
 	}, [getProducts, getSubCategories , getCategories, getInventory]);
 	
-	if (!inventory.length || !categories.length || !subCategories.length) return null;
+	//if (!inventory.length || !categories.length || !subCategories.length) return null;
 
 	let inventoryList = inventory.map(item => {
 		return {

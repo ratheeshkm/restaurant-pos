@@ -10,8 +10,9 @@ import { v4 as uuidv4 } from 'uuid';
 const Dashborad = (props) => {
 	const { getCompletedOrders, completedOrders } = props;
 	useState(() => {
-		getCompletedOrders();
-	}, [])
+		!completedOrders.length && getCompletedOrders();
+	}, [completedOrders.length])
+	
 	let newCustomers = 0;
 	let customerList = [];
 	let totalSales = 0;
@@ -19,9 +20,11 @@ const Dashborad = (props) => {
 		if(!item.phonenumber) {
 			newCustomers++;
 		} else {
-			if(customerList.indexOf(item.phonenumber === -1)) {
+			console.log(customerList.indexOf(item.phonenumber))
+			if(customerList.indexOf(item.phonenumber) === -1) {
 				newCustomers++;
 			}
+			customerList.push(item.phonenumber);
 		}
 		totalSales += item.paymentamount && parseInt(item.paymentamount, 10);
 	}
@@ -112,7 +115,7 @@ const Dashborad = (props) => {
                                             </thead>
                                             <tbody>
 																						{
-																							completedOrders.length && completedOrders.map( item => <tr key={uuidv4()}>
+																							completedOrders.map( item => <tr key={uuidv4()}>
                                                 <td  className="text-left text-muted">{item.orderid}</td>
 																									<td>
 																											<div className="widget-content p-0">
@@ -133,7 +136,10 @@ const Dashborad = (props) => {
 																								</tr>
 																							)
 																						}
-                                            
+																						
+                                            {
+																							!completedOrders.length && <tr><td colSpan="5"><div style={{margin: "0 auto", textAlign:"center"}}><b>No Data</b></div></td></tr>
+																						}
                                            </tbody>
                                         </table>
                                     </div>

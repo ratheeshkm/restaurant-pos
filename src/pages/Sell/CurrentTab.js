@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Row, Col, Nav, NavItem, NavLink, Card, Button, CardTitle, CardImg, CardBody } from 'reactstrap';
 import OrderItemsContainer from './OrderItemsContainer';
 import { v4 as uuidv4 } from 'uuid';
+import { toast, Bounce } from 'react-toastify';
 
 const CurrentTab  = (props) => {
 	const [ categoryId, setCategoryId ] = useState("all");
@@ -31,13 +32,15 @@ const CurrentTab  = (props) => {
 		return null;
 	}
 
-	const productList = products.map(item => {
+	let productList = products.map(item => {
 		let productInventory = inventory.filter(invItem => invItem.id === item.inventoryid);
-		return {...item, ...productInventory[0]};
+		return {...item, ...productInventory[0], quantity:1};
 	});
 
-	console.log("productList-->", productList)
-	
+	if(categoryId !== 'all') {
+		productList = productList.filter(item => item.categoryid === categoryId);
+	}
+
 	const handleSetCategoryId = (event) => {
 		setCategoryId(event.currentTarget.dataset.categoryid);
 	}
@@ -68,11 +71,20 @@ const CurrentTab  = (props) => {
 			orderId: orderId,
 			paymentAmount: total
 		}
+		console.log(paymentInfo)
+	
 		props.setPayment(paymentInfo)
 		.then(() => {
 			if(orderCategory === 'RestaurantIn') {
 				props.setOrderReset();
 				props.setTableReset();
+				toast("Order Completed", {
+					transition: Bounce,
+					closeButton: true,
+					autoClose: 5000,
+					position: 'top-right',
+					type: 'success'
+				})
 			}
 		})
 		if(orderCategory === 'Delivery' || orderCategory === 'TakeAway') {
@@ -84,6 +96,13 @@ const CurrentTab  = (props) => {
 			.then(() => {
 				props.setOrderReset();
 				props.setTableReset();
+				toast("Order Completed", {
+					transition: Bounce,
+					closeButton: true,
+					autoClose: 5000,
+					position: 'top-right',
+					type: 'success'
+				})
 			})
 		}
 	}
@@ -140,6 +159,7 @@ const CurrentTab  = (props) => {
 
 	const getPaymentInfo = (paymentInfo) => {
 		paymentDetails = paymentInfo;
+		console.log("paymentDetails-->", paymentDetails)
 	}
 	
 	const PaymentView = (props) => {
@@ -199,7 +219,7 @@ const CurrentTab  = (props) => {
 												<div className="form-group">
 													<label htmlFor="Name">Name</label>
 													<input name="name" data-testid="name" type="text" className="form-control" aria-invalid="false" 
-													value={paymentInfo.name} onChange={handleChange} />
+													value={paymentInfo.name} onChange={handleChange} autoComplete="off" />
 													<div className="text-danger"></div>
 												</div>
 											</Col>
@@ -207,7 +227,7 @@ const CurrentTab  = (props) => {
 												<div className="form-group">
 													<label htmlFor="PhoneNumber">Phone Number</label>
 													<input name="phoneNumber" data-testid="phoneNumber" type="text" className="form-control" 
-													aria-invalid="false" value={paymentInfo.phoneNumber} onChange={handleChange} />
+													aria-invalid="false" value={paymentInfo.phoneNumber} onChange={handleChange}  autoComplete="off" />
 													<div className="text-danger"></div>
 												</div>
 											</Col>`

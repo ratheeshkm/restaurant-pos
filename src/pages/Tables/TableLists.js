@@ -14,9 +14,8 @@ const TableLists = (props) => {
 		getTables();
 	}, [getRestaurantDetails, getTables]);
 
-	console.log("restaurantDetails ->", restaurantDetails)
-	
-	if (!restaurantDetails || !tables.length) return null;
+
+	if (!restaurantDetails) return null;
 
 	function nameColumnFormatter(cell, row, rowIndex, formatExtraData) {
 		let cellValue = formatColumn(cell, row, rowIndex, formatExtraData, 'name');

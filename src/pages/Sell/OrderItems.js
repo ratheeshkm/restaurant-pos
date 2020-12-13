@@ -61,6 +61,7 @@ const OrderItems  = (props) => {
 			quantity: qty
 		}
 		console.log("itemToUpdate--", itemToUpdate)
+		console.log(parseInt(item.quantity, 10) !== qty)
 		parseInt(item.quantity, 10) !== qty && updateOrderItemDb(itemToUpdate, itemId)
 	}
 

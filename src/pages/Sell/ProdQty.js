@@ -10,6 +10,7 @@ const ProdQty = (props) => {
 
 	useEffect(() => {
 		qty && setQty(parseInt(qty, 10));
+		console.log("qty-->", qty)
 		qty && updateItemQty(qty, item, itemId);
 	}, [qty, updateItemQty, item, itemId]);
 
@@ -22,7 +23,7 @@ const ProdQty = (props) => {
 			qty > 1 && setQty(qty - 1)
 		}
 	};
-	console.log("qty-->", qty)
+	
   return (
     <div className="input-group">
       <input

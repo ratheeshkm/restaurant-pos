@@ -90,13 +90,14 @@ export const updateOrderItemDb = (data, itemId) => {
 		let defer = Q.defer();
 		dispatch(setLoading(true));
 		console.log("Data", data);
-		dispatch(updateOrderItem(data));
+		
 		axios.post("http://localhost:5000/pos/v1/update-order-item", {
 			data: data,
 			itemId: itemId
 		})
 		.then((result) => {
 			defer.resolve(result);
+			dispatch(updateOrderItem(data));
 			dispatch(getOrderLists());
 		})
 		.catch((error) => {
@@ -104,6 +105,7 @@ export const updateOrderItemDb = (data, itemId) => {
 			defer.resolve(error);
 			dispatch(setLoading(false));
 		});
+		
 		return defer.promise;
 	}
 }
